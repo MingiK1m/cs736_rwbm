@@ -8,6 +8,7 @@
 
 4) ./bm remove [block_size] [iter_count] [dont_care]
 
+----
 
 ex)
 
@@ -25,6 +26,7 @@ file system block size can be obtained using command below.
 
 sudo blockdev --getbsz [partition]
 
+----
 
 ex)
 
