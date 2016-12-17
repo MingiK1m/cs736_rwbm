@@ -24,7 +24,7 @@ char * log_filepath;
 #define BUF_SIZE 1024*1024 // 1mb
 #define STR_BUF_SIZE 1024
 
-void rw_writefile_benchmark(const char * filepath, int block_size, int count){
+void rw_writefile_benchmark(const char * filepath, int block_size, int count, char isFsyncOn){
 	char filepath_r[1024] = "";
 	int fd;
 	int ret_val, str_len;
@@ -55,6 +55,10 @@ void rw_writefile_benchmark(const char * filepath, int block_size, int count){
 		if(ret_val != block_size){
 			printf("failed to write a whole block\n");
 			exit(1);
+		}
+
+		if(isFsyncOn == TRUE){
+		    fsync(fd);
 		}
 
 		TIMER_END();
@@ -244,24 +248,33 @@ void rw_remove(const char * filepath, int count){
 void main(int argc, char ** argv){
 	int repeat;
 	int block_size;
+	char isFsyncOn;
 
-	if(argc != 5){
-		printf("Usage : ./bm <write|read> <block_size> <repeat_count> <log_filename>\n");
+	if(argc != 6){
+		printf("Usage : ./bm <write|read> <block_size> <repeat_count> <log_filename> <on|off(fsync)>\n");
 		exit(1);
 	}
 
 	block_size = atoi(argv[2]);
 	repeat = atoi(argv[3]);
 	log_filepath = argv[4];
+	if(strcmp(argv[5], "on") ==0){
+	    isFsyncOn = TRUE;
+	} else if (strcmp(argv[5], "off") ==0){
+	    isFsyncOn = FALSE;
+	} else {
+		printf("Usage : ./bm <write|read> <block_size> <repeat_count> <log_filename> <on|off(fsync)>\n");
+		exit(1);
+	}
 
 	if(strcmp(argv[1], "write") == 0){
-		rw_writefile_benchmark(FILENAME, block_size, repeat);
+		rw_writefile_benchmark(FILENAME, block_size, repeat, isFsyncOn);
 	} else if(strcmp(argv[1], "read") == 0){
 		rw_readfile_benchmark(FILENAME, block_size, repeat);
 	} else if(strcmp(argv[1], "remove") == 0){
 		rw_remove(FILENAME, repeat);
 	} else {
-		printf("Usage : ./bm <write|read> <block_size> <repeat_count> <log_filename>\n");
+		printf("Usage : ./bm <write|read> <block_size> <repeat_count> <log_filename> <on|off<fsync)>\n");
 		exit(1);
 	}
 }
