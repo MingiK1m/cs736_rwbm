@@ -1,4 +1,4 @@
-Steps to measure
+<b>Steps to measure</b>
 
 1) ./bm write [block_size] [iter_count] [wt_log_path]
 
@@ -8,7 +8,9 @@ Steps to measure
 
 4) ./bm remove [block_size] [iter_count] [dont_care]
 
+
 ex)
+
 ./bm write 4096 10000 wrt_log
 
 reboot
@@ -17,6 +19,7 @@ reboot
 
 ./bm remove 4096 10000 a
 
+----
 
 file system block size can be obtained using command below.
 
