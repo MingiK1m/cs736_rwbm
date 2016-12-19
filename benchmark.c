@@ -43,7 +43,7 @@ void rw_writefile_benchmark(const char * filepath, int block_size, int count, ch
 	for(int i=0; i<count; i++){
 		sprintf(filepath_r, "%s_%d", filepath, i);
 
-		fd = open("/", O_RDWR | O_CREAT | O_TRUNC, 0666);
+		fd = open(filepath_r, O_RDWR | O_CREAT | O_TRUNC, 0666);
 		if (fd < 0) {
 			perror("Failed to open file\n");
 			exit(1);
