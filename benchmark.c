@@ -43,7 +43,7 @@ void rw_writefile_benchmark(const char * filepath, int block_size, int count, ch
 	for(int i=0; i<count; i++){
 		sprintf(filepath_r, "%s_%d", filepath, i);
 
-		fd = open(filepath_r, O_RDWR | O_CREAT | O_TRUNC, 0666);
+		fd = open("/", O_RDWR | O_CREAT | O_TRUNC, 0666);
 		if (fd < 0) {
 			perror("Failed to open file\n");
 			exit(1);
@@ -53,7 +53,7 @@ void rw_writefile_benchmark(const char * filepath, int block_size, int count, ch
 
 		ret_val = write(fd, buf, block_size);
 		if(ret_val != block_size){
-			printf("failed to write a whole block\n");
+			perror("failed to write a whole block\n");
 			exit(1);
 		}
 
@@ -138,7 +138,7 @@ void rw_readfile_benchmark(const char * filepath, int block_size, int count){
 
 		ret_val = read(fd, buf, block_size);
 		if(ret_val != block_size){
-			printf("failed to read a whole block %d/%d\n", ret_val, block_size);
+			perror("failed to read a whole block\n");
 			exit(1);
 		}
 
@@ -167,7 +167,7 @@ void rw_readfile_benchmark(const char * filepath, int block_size, int count){
 
 		ret_val = read(fd, buf, block_size);
 		if(ret_val != block_size){
-			printf("failed to read a whole block %d/%d\n", ret_val, block_size);
+			perror("failed to read a whole block\n");
 			exit(1);
 		}
 
